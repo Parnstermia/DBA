@@ -7,7 +7,10 @@ package p2;
 import es.upv.dsic.gti_ia.core.AgentID;
 import es.upv.dsic.gti_ia.core.ACLMessage;
 import es.upv.dsic.gti_ia.core.SingleAgent;
-import org.codehaus.jettison.json.JSONObject;
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 /**
  *
  * @author Sergio López Ayala
@@ -48,17 +51,17 @@ public class Agente extends SingleAgent{
     
     @Override
     public void execute(){
-        JSONObject objeto = new JSONObject();
+        JsonObject objeto = new JsonObject();
         
         while(!terminar){
             switch(estado){
                 case NOLOGEADO:
                     try{
-                        objeto.put("command", new String("login"));
-                        objeto.put("world", miMapa);
-                        objeto.put("radar", this.getAid());
-                        objeto.put("scanner", this.getAid());
-                        objeto.put("gps", this.getAid());
+                        objeto.add("command", new String("login"));
+                        objeto.add("world", miMapa);
+                        objeto.add("radar", this.getName());
+                        objeto.add("scanner", this.getName());
+                        objeto.add("gps", this.getName());
                     }catch( Exception e){
                         System.err.println("Fallo al serializar login");
                     }
@@ -75,9 +78,10 @@ public class Agente extends SingleAgent{
                     while (repetir)  {
                         try {
                             inbox = receiveACLMessage();
-                            String respuesta = inbox.getContent();
-                            objeto.get("result");
-                            switch(respuesta){
+                            objeto = Json.parse(inbox.getContent()).asObject();
+                            String resultado = objeto.get("result").asString();
+                            
+                            switch(resultado){
                                 case "BAD_MAP":
                                     // TO DO
                                     System.err.println("Mapa especificado inválido");
@@ -87,7 +91,7 @@ public class Agente extends SingleAgent{
                                     System.err.println("error al crear el JSON");
                                     break;
                                 default:
-                                    ClaveConexion = respuesta;
+                                    ClaveConexion = resultado;
                                     estado = LOGEADO;
                                     repetir = false;
                                     break;

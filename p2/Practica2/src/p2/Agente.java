@@ -92,6 +92,7 @@ public class Agente extends SingleAgent{
                                     break;
                                 default:
                                     ClaveConexion = resultado;
+                                    // LOGEADO O ESCUCHANDO?
                                     estado = LOGEADO;
                                     repetir = false;
                                     break;
@@ -108,7 +109,60 @@ public class Agente extends SingleAgent{
                     break;
                 case ESCUCHANDO:
                     // TO DO
+                    System.out.println("Agente("+this.getName()+") Esperando respuesta");
                     
+                    for(int i = 0; i < 4; i++)  {
+                        try {
+                            inbox = receiveACLMessage();
+                            objeto = Json.parse(inbox.getContent()).asObject();
+                            
+                            if( objeto.get("escaner") != null){
+                                //Recibido mensaje del escaner
+                                //Pasar mensaje al escáner y parsearlo apropiadamente
+                                //TO DO
+                            }else if( objeto.get("radar") != null){
+                                //Recibido mensaje del radar
+                                //Pasar mensaje al radar y parsearlo apropiadamente
+                                //TO DO
+                            }else if( objeto.get("gps") != null){
+                                //Recibido mensaje del gps
+                                //Pasar mensaje al gps y parsearlo apropiadamente
+                                //TO DO
+                            }else if( objeto.get("result") != null){
+                                String resultado = objeto.get("result").asString();
+                                switch(resultado){
+                                    case "OK":
+                                        // TO DO
+                                        
+                                        break;
+                                    case "CRASHED":
+                                        // TO DO
+                                        System.err.println("El agente se ha chocado");
+                                        break;
+                                    case "BAD_COMMAND":
+                                        //Requiere terminar y volver a logear
+                                        // TO DO
+                                        System.err.println("Error, orden desconocida");
+                                        break;
+                                    case "BAD_PROTOCOL":
+                                        //Requiere terminar y volver a logear
+                                        // TO DO
+                                        System.err.println("Error de protocolo");
+                                        break;
+                                    case "BAD_KEY":
+                                        //Requiere terminar y volver a logear
+                                        // TO DO
+                                        System.err.println("Error en la clave enviada");
+                                        break;
+                                }
+                            } 
+                            
+                            
+                        } catch (Exception ex) {
+                            System.err.println("Agente("+this.getName()+") Error al recibir login");
+                            repetir=false;
+                        }                        
+                    }
                     break;
                 case FIN:
                     // TO DO

@@ -13,7 +13,11 @@ import com.eclipsesource.json.JsonValue;
  * @author Sergio López Ayala
  */
 public class Radar {
-    protected int[] miVector = new int[25];
+    protected int[] miVector;
+    
+    public Radar(){
+        miVector = new int[25];
+    }
     
     /**
     *

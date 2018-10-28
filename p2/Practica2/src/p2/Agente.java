@@ -7,6 +7,7 @@ package p2;
 import es.upv.dsic.gti_ia.core.AgentID;
 import es.upv.dsic.gti_ia.core.ACLMessage;
 import es.upv.dsic.gti_ia.core.SingleAgent;
+
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
@@ -36,11 +37,20 @@ public class Agente extends SingleAgent{
     //Clave a enviar con cada mensaje en el campo Key del JSon
     private String ClaveConexion = "";
     
+    
+    /**
+    *
+    * @author Sergio López Ayala
+    */
     public Agente(AgentID aid, String mapa) throws Exception{
         super(aid);
         miMapa = mapa;
     }
     
+    /**
+    *
+    * @author Sergio López Ayala
+    */
     @Override
     public void init(){
         miBateria = new Bateria();
@@ -49,6 +59,10 @@ public class Agente extends SingleAgent{
         estado = NOLOGEADO;
     }
     
+    /**
+     *
+     * @author Sergio López Ayala
+     */
     @Override
     public void execute(){
         JsonObject objeto = new JsonObject();
@@ -172,9 +186,15 @@ public class Agente extends SingleAgent{
         }
     }
     
+    /**
+    *
+    * @author 
+    */
     @Override
     public void finalize(){
-        
+        //TO-DO
+        //Logout
+        //Recibir traza
     }
     
     

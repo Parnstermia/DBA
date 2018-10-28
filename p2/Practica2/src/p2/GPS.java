@@ -9,17 +9,24 @@ import com.eclipsesource.json.JsonObject;
 
 /**
  *
- * @author Awake
+ * @author Sergio López Ayala
  */
 public class GPS {
     protected int x;
     protected int y;
     
+    /**
+     *
+     * @author Sergio López Ayala
+     */
     public GPS(){
         x = 0;
         y = 0;
     }
-    
+    /**
+    *
+    * @author Sergio López Ayala
+    */
     public void parseCoordinates(JsonObject objeto){
         x = objeto.get("gps").asObject().get("x").asInt();
         y = objeto.get("gps").asObject().get("y").asInt();

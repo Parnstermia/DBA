@@ -7,7 +7,7 @@ package p2;
 
 /**
  *
- * @author Awake
+ * @author 
  */
 public class Escaner {
     

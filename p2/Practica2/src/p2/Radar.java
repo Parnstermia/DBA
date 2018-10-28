@@ -10,11 +10,15 @@ import com.eclipsesource.json.JsonValue;
 
 /**
  *
- * @author Awake
+ * @author Sergio López Ayala
  */
 public class Radar {
     protected int[] miVector = new int[25];
     
+    /**
+    *
+    * @author Sergio López Ayala
+    */
     public void parseCoordinates(JsonObject objeto){
         int i = 0;
         for (JsonValue j : objeto.get("radar").asArray()){

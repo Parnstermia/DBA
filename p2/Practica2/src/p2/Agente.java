@@ -9,7 +9,10 @@ import es.upv.dsic.gti_ia.core.ACLMessage;
 import es.upv.dsic.gti_ia.core.SingleAgent;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
+import java.io.FileOutputStream;
+import java.io.IOException;
 /**
  *
  * @author Sergio López Ayala
@@ -97,8 +100,9 @@ public class Agente extends SingleAgent{
     */
     public void login(){
         JsonObject objeto = new JsonObject();
+        System.out.println("10");
         try{
-            objeto.add("command", new String("login"));
+            objeto.add("command", "login");
             objeto.add("world", miMapa);
             objeto.add("radar", this.getName());
             objeto.add("scanner", this.getName());
@@ -109,6 +113,10 @@ public class Agente extends SingleAgent{
         outbox = new ACLMessage();
         outbox.setSender(this.getAid());
         outbox.setReceiver(miContacto);
+        System.out.println("A");
+        System.out.println(objeto.asString());
+        outbox.setContent(objeto.asString());
+        System.out.println("11");
         this.send(outbox);
     }
     
@@ -158,21 +166,29 @@ public class Agente extends SingleAgent{
                     boolean repetir=true;
                     while (repetir)  {
                         try {
+                            System.out.println("1");
                             inbox = receiveACLMessage();
+                            System.out.println("8");
                             objeto = Json.parse(inbox.getContent()).asObject();
                             String resultado = objeto.get("result").asString();
-                            
+                            System.out.println("2");
                             switch(resultado){
                                 case "BAD_MAP":
+                                    System.out.println("3");
                                     // TO DO
                                     System.err.println("Mapa especificado inválido");
                                     break;
                                 case "BAD_PROTOCOL":
+                                    System.out.println("4");
                                     // TO DO
                                     System.err.println("error al crear el JSON");
                                     break;
                                 default:
+                                    System.out.println("5");
                                     ClaveConexion = resultado;
+                                    System.out.println(ClaveConexion);
+                                    logout();
+                                    System.out.println("6");
                                     estado = LOGEADO;
                                     repetir = false;
                                     break;
@@ -181,7 +197,7 @@ public class Agente extends SingleAgent{
                             System.err.println("Agente("+this.getName()+") Error al recibir login");
                             repetir=false;
                         }                        
-                    }
+                    }         
                     break;
                 case LOGEADO:
                     String movimiento = pensar();
@@ -236,14 +252,76 @@ public class Agente extends SingleAgent{
     
     /**
     *
-    * @author 
+    * @author Thomas LESBROS 
     */
     @Override
     public void finalize(){
         //TO-DO
         //Logout
+        outbox = new ACLMessage();
+        outbox.setSender(this.getAid());
+        outbox.setReceiver(miContacto);
+        JsonObject objeto = new JsonObject();
+        
+        objeto.add("command", "logout" );
+        objeto.add("key", ClaveConexion );
+
+        outbox.setContent(objeto.asString());
+        this.send(outbox);
+        System.err.println("Esta ahora deslogeado");
+        
         //Recibir traza
+        
+        try{
+            System.err.println("Recibiendo traza...");
+            ACLMessage inbox = this.receiveACLMessage();
+            JsonObject injson=Json.parse(inbox.getContent()).asObject();
+            JsonArray ja = injson.get("trace").asArray();
+            byte data[] = new byte[ja.size()];
+            for(int i=0; i<data.length; i++){
+                data[i]=(byte) ja.get(i).asInt();
+            }
+            FileOutputStream fos = new FileOutputStream("Traza.png");
+            fos.write(data);
+            fos.close();
+            System.err.println("Traza Guardada como 'Traza.png'");
+        }catch(InterruptedException | IOException ex){
+            System.err.println("Error al hacer la traza");
+        }
     }
-    
-    
+    public void logout(){
+        //TO-DO
+        //Logout
+        System.out.println("7");
+        outbox = new ACLMessage();
+        outbox.setSender(this.getAid());
+        outbox.setReceiver(miContacto);
+        JsonObject objeto = new JsonObject();
+        
+        objeto.add("command", "logout" );
+        objeto.add("key", ClaveConexion );
+
+        outbox.setContent(objeto.asString());
+        this.send(outbox);
+        System.err.println("Esta ahora deslogeado");
+        
+        //Recibir traza
+        
+        try{
+            System.err.println("Recibiendo traza...");
+            ACLMessage inbox = this.receiveACLMessage();
+            JsonObject injson=Json.parse(inbox.getContent()).asObject();
+            JsonArray ja = injson.get("trace").asArray();
+            byte data[] = new byte[ja.size()];
+            for(int i=0; i<data.length; i++){
+                data[i]=(byte) ja.get(i).asInt();
+            }
+            FileOutputStream fos = new FileOutputStream("Traza.png");
+            fos.write(data);
+            fos.close();
+            System.err.println("Traza Guardada como 'Traza.png'");
+        }catch(InterruptedException | IOException ex){
+            System.err.println("Error al hacer la traza");
+        }
+    }
 }

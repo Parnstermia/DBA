@@ -18,6 +18,11 @@ public class Escaner {
     public Escaner(){
         miVector = new double[25];
     }
+    
+    /**
+    * @param objeto Mensaje recibido por el servidor
+    * @author Sergio López Ayala
+    */
     public void parsearEscaner(JsonObject objeto){
         int i = 0;
         for (JsonValue j : objeto.get("radar").asArray()){     

@@ -52,6 +52,10 @@ public class JsonTest {
         System.out.print("Elecciones presentadas= ");
         for (JsonValue j : objeto.get("vector").asArray())
             System.out.print(j.asInt()+", ");
+        
+        objeto = new JsonObject();
+        System.out.println("\nNombre= "+objeto.get("nombre"));
+        
         /*
         JsonArray vector2 = objeto.get("vector").asArray();
         for (int i=0; i<vector2.size(); i++)

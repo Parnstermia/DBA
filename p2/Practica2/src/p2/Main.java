@@ -22,9 +22,9 @@ public class Main {
         Agente roboto=null;
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
-        String virtualhost = "";
-        String username = "";
-        String pass = "";
+        String virtualhost = "Bellatrix";
+        String username = "Hercules";
+        String pass = "Benavente";
         /////////////////////////////////////////////////
         String mapa = "map1";
         
@@ -32,7 +32,7 @@ public class Main {
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
-            roboto = new Agente(new AgentID("Smith"), mapa);
+            roboto = new Agente(new AgentID("Smith"), mapa, virtualhost);
         } catch (Exception ex) {
             System.err.println("Error creando agentes");
             System.exit(1);

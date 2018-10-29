@@ -23,7 +23,7 @@ public class Radar {
     *
     * @author Sergio López Ayala
     */
-    public void parseCoordinates(JsonObject objeto){
+    public void parsearCoordenadas(JsonObject objeto){
         int i = 0;
         for (JsonValue j : objeto.get("radar").asArray()){
             miVector[i] = j.asInt();

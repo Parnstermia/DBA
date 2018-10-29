@@ -36,15 +36,87 @@ public class Agente extends SingleAgent{
     
     //Clave a enviar con cada mensaje en el campo Key del JSon
     private String ClaveConexion = "";
-    
+    private AgentID miContacto;
     
     /**
-    *
+    * Método para la elección del siguiente movimiento
+    * @return orden a enviar
+    * @author 
+    */
+    public String pensar(){
+        String orden = "";
+        // TO DO
+        
+        
+        return orden;
+    }
+    
+   /**
+    * Método para la gestión del login al servidor
+    * @author Sergio López Ayala
+    */   
+    public void gestionResultados(JsonObject objeto){
+        String resultado = objeto.get("result").asString();
+        switch(resultado){
+            case "OK":
+                // TO DO
+                // Comprobar si estado es final
+                // y hace falta cambiar a FIN
+                estado = LOGEADO;
+                break;
+            case "CRASHED":
+                // TO DO
+                System.err.println("El agente se ha chocado");
+                break;
+            case "BAD_COMMAND":
+                //Requiere terminar y volver a logear
+                // TO DO
+                System.err.println("Error, orden desconocida");
+                break;
+            case "BAD_PROTOCOL":
+                //Requiere terminar y volver a logear
+                // TO DO
+                System.err.println("Error de protocolo");
+                break;
+            case "BAD_KEY":
+                //Requiere terminar y volver a logear
+                // TO DO
+                System.err.println("Error en la clave enviada");
+                break;
+        }
+        
+    }
+    /**
+    * Método para la gestión del login al servidor
     * @author Sergio López Ayala
     */
-    public Agente(AgentID aid, String mapa) throws Exception{
+    public void login(){
+        JsonObject objeto = new JsonObject();
+        try{
+            objeto.add("command", new String("login"));
+            objeto.add("world", miMapa);
+            objeto.add("radar", this.getName());
+            objeto.add("scanner", this.getName());
+            objeto.add("gps", this.getName());
+        }catch( Exception e){
+            System.err.println("Fallo al serializar login");
+        }
+        outbox = new ACLMessage();
+        outbox.setSender(this.getAid());
+        outbox.setReceiver(miContacto);
+        this.send(outbox);
+    }
+    
+    /**
+    * @param aid id del agente manejado por Magentix
+    * @param mapa nivel a ejecutar
+    * @param contacto Receptor de nuestros mensajes
+    * @author Sergio López Ayala
+    */
+    public Agente(AgentID aid, String mapa, String contacto) throws Exception{
         super(aid);
         miMapa = mapa;
+        miContacto = new AgentID(contacto);
     }
     
     /**
@@ -54,6 +126,9 @@ public class Agente extends SingleAgent{
     @Override
     public void init(){
         miBateria = new Bateria();
+        miEscaner = new Escaner();
+        miRadar = new Radar();
+        miGPS = new GPS();
         inbox = null;
         outbox = null;
         estado = NOLOGEADO;
@@ -70,21 +145,8 @@ public class Agente extends SingleAgent{
         while(!terminar){
             switch(estado){
                 case NOLOGEADO:
-                    try{
-                        objeto.add("command", new String("login"));
-                        objeto.add("world", miMapa);
-                        objeto.add("radar", this.getName());
-                        objeto.add("scanner", this.getName());
-                        objeto.add("gps", this.getName());
-                    }catch( Exception e){
-                        System.err.println("Fallo al serializar login");
-                    }
-                    outbox = new ACLMessage();
-                    outbox.setSender(this.getAid());
-                    outbox.setReceiver(null); //TO DO cambiar receiver
-                    this.send(outbox);
+                    login();
                     estado = ESCUCHALOGIN;
-                    
                     break;
                 case ESCUCHALOGIN:
                     System.out.println("Agente("+this.getName()+") Esperando respuesta");
@@ -118,8 +180,16 @@ public class Agente extends SingleAgent{
                     }
                     break;
                 case LOGEADO:
-                    // TO DO
+                    String movimiento = pensar();
+                    outbox = new ACLMessage();
+                    outbox.setSender(this.getAid());
+                    outbox.setReceiver(miContacto);
+                    if(!objeto.isEmpty()){
+                        objeto = new JsonObject();
+                    }
                     
+                    
+                    estado = ESCUCHANDO;
                     break;
                 case ESCUCHANDO:
                     // TO DO
@@ -133,42 +203,18 @@ public class Agente extends SingleAgent{
                             if( objeto.get("escaner") != null){
                                 //Recibido mensaje del escaner
                                 //Pasar mensaje al escáner y parsearlo apropiadamente
-                                //TO DO
+                                miEscaner.parsearEscaner(objeto);
                             }else if( objeto.get("radar") != null){
                                 //Recibido mensaje del radar
                                 //Pasar mensaje al radar y parsearlo apropiadamente
-                                //TO DO
+                                miRadar.parsearCoordenadas(objeto);
                             }else if( objeto.get("gps") != null){
                                 //Recibido mensaje del gps
                                 //Pasar mensaje al gps y parsearlo apropiadamente
-                                //TO DO
+                                miGPS.parsearCoordenadas(objeto);
                             }else if( objeto.get("result") != null){
-                                String resultado = objeto.get("result").asString();
-                                switch(resultado){
-                                    case "OK":
-                                        // TO DO
-                                        
-                                        break;
-                                    case "CRASHED":
-                                        // TO DO
-                                        System.err.println("El agente se ha chocado");
-                                        break;
-                                    case "BAD_COMMAND":
-                                        //Requiere terminar y volver a logear
-                                        // TO DO
-                                        System.err.println("Error, orden desconocida");
-                                        break;
-                                    case "BAD_PROTOCOL":
-                                        //Requiere terminar y volver a logear
-                                        // TO DO
-                                        System.err.println("Error de protocolo");
-                                        break;
-                                    case "BAD_KEY":
-                                        //Requiere terminar y volver a logear
-                                        // TO DO
-                                        System.err.println("Error en la clave enviada");
-                                        break;
-                                }
+                                gestionResultados(objeto);
+                               
                             } 
                             
                             
@@ -179,8 +225,7 @@ public class Agente extends SingleAgent{
                     }
                     break;
                 case FIN:
-                    // TO DO
-                    
+                    terminar = true;
                     break;
             }
         }

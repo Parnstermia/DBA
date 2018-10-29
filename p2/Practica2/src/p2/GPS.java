@@ -27,7 +27,7 @@ public class GPS {
     *
     * @author Sergio López Ayala
     */
-    public void parseCoordinates(JsonObject objeto){
+    public void parsearCoordenadas(JsonObject objeto){
         x = objeto.get("gps").asObject().get("x").asInt();
         y = objeto.get("gps").asObject().get("y").asInt();
     }

@@ -19,13 +19,13 @@ public class Main {
      */
 
     public static void main(String[] args) {
-        Agente roboto=null;
+        Agente roboto;
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
         String virtualhost = "";
         String username = "";
         String pass = "";
-        /////////////////////////////////////////////////
+        ////////////////////////////////////////////
         String mapa = "map1";
         
         
@@ -33,11 +33,12 @@ public class Main {
         
         try {
             roboto = new Agente(new AgentID("Smith"), mapa, virtualhost);
+            roboto.start();
         } catch (Exception ex) {
             System.err.println("Error creando agentes");
             System.exit(1);
         }
-        roboto.start();
+        
     }
     
 }

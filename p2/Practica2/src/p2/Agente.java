@@ -9,9 +9,7 @@ import es.upv.dsic.gti_ia.core.ACLMessage;
 import es.upv.dsic.gti_ia.core.SingleAgent;
 
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 /**
  *
  * @author Sergio López Ayala
@@ -52,7 +50,14 @@ public class Agente extends SingleAgent{
     }
     
    /**
-    * Método para la gestión del login al servidor
+    * Método para la gestión de los resultados del servidor
+    * Resultados posibles : 
+    * OK --> todo va bien, podemos seguir dando órdenes
+    * CRASHED--> nos hemos chocado con una pared, o no tenemos batería
+    * BAD_COMMAND --> orden no reconocida por el agente
+    * BAD_PROTOCOL --> fallo en el envío de mensaje
+    * BAD_KEY --> Clave enviada errónea
+    * @param objeto mensaje que contiene un Json de resultado
     * @author Sergio López Ayala
     */   
     public void gestionResultados(JsonObject objeto){
@@ -120,7 +125,7 @@ public class Agente extends SingleAgent{
     }
     
     /**
-    *
+    * Iniciación del agente
     * @author Sergio López Ayala
     */
     @Override
@@ -168,7 +173,6 @@ public class Agente extends SingleAgent{
                                     break;
                                 default:
                                     ClaveConexion = resultado;
-                                    // LOGEADO O ESCUCHANDO?
                                     estado = LOGEADO;
                                     repetir = false;
                                     break;
@@ -184,11 +188,16 @@ public class Agente extends SingleAgent{
                     outbox = new ACLMessage();
                     outbox.setSender(this.getAid());
                     outbox.setReceiver(miContacto);
+                    
                     if(!objeto.isEmpty()){
                         objeto = new JsonObject();
                     }
                     
+                    objeto.add("command", movimiento );
+                    objeto.add("key", ClaveConexion );
                     
+                    outbox.setContent(objeto.asString());
+                    this.send(outbox);
                     estado = ESCUCHANDO;
                     break;
                 case ESCUCHANDO:
@@ -201,16 +210,10 @@ public class Agente extends SingleAgent{
                             objeto = Json.parse(inbox.getContent()).asObject();
                             
                             if( objeto.get("escaner") != null){
-                                //Recibido mensaje del escaner
-                                //Pasar mensaje al escáner y parsearlo apropiadamente
                                 miEscaner.parsearEscaner(objeto);
                             }else if( objeto.get("radar") != null){
-                                //Recibido mensaje del radar
-                                //Pasar mensaje al radar y parsearlo apropiadamente
                                 miRadar.parsearCoordenadas(objeto);
                             }else if( objeto.get("gps") != null){
-                                //Recibido mensaje del gps
-                                //Pasar mensaje al gps y parsearlo apropiadamente
                                 miGPS.parsearCoordenadas(objeto);
                             }else if( objeto.get("result") != null){
                                 gestionResultados(objeto);

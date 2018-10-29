@@ -197,7 +197,6 @@ public class Agente extends SingleAgent{
                 case ESCUCHALOGIN:
                     System.out.println("Agente("+this.getName()+") Esperando respuesta");
                     
-                    
                     for(int i = 0 ; i < 4 ; i++)
                         recibirMensaje();
                     
@@ -230,36 +229,25 @@ public class Agente extends SingleAgent{
                         outbox.setContent(objeto.toString());
                         this.send(outbox);
                         System.out.println(ClaveConexion);
-                        System.out.println(objeto.toString());
                         estado = ESCUCHANDO;
                     }else{
+                        System.out.println("Pasamos a estado fin");
                         estado = FIN;
                     }
                     break;
                 case ESCUCHANDO:
-                    // TO DO
                     System.out.println("Agente("+this.getName()+") Esperando respuesta");
                     
                     for(int i = 0; i < 4; i++){
-                        recibirMensaje();
-                                          
+                        recibirMensaje();               
                     }
                     break;
                 case FIN:
+                    logout();
                     terminar = true;
                     break;
             }
         }
-    }
-    
-    /**
-    *
-    * @author Thomas LESBROS 
-    */
-    @Override
-    public void finalize(){
-        System.out.println("llegamos a finalize");
-        logout();
     }
     
     /**

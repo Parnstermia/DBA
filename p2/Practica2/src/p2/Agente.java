@@ -100,7 +100,6 @@ public class Agente extends SingleAgent{
     */
     public void login(){
         JsonObject objeto = new JsonObject();
-        System.out.println("10");
         try{
             objeto.add("command", "login");
             objeto.add("world", miMapa);
@@ -113,10 +112,8 @@ public class Agente extends SingleAgent{
         outbox = new ACLMessage();
         outbox.setSender(this.getAid());
         outbox.setReceiver(miContacto);
-        System.out.println("A");
-        System.out.println(objeto.asString());
-        outbox.setContent(objeto.asString());
-        System.out.println("11");
+        outbox.setContent(objeto.toString());
+        System.out.println(outbox);
         this.send(outbox);
     }
     
@@ -303,12 +300,12 @@ public class Agente extends SingleAgent{
 
         outbox.setContent(objeto.asString());
         this.send(outbox);
-        System.err.println("Esta ahora deslogeado");
+        System.out.println("Esta ahora deslogeado");
         
         //Recibir traza
         
         try{
-            System.err.println("Recibiendo traza...");
+            System.out.println("Recibiendo traza...");
             ACLMessage inbox = this.receiveACLMessage();
             JsonObject injson=Json.parse(inbox.getContent()).asObject();
             JsonArray ja = injson.get("trace").asArray();
@@ -319,7 +316,7 @@ public class Agente extends SingleAgent{
             FileOutputStream fos = new FileOutputStream("Traza.png");
             fos.write(data);
             fos.close();
-            System.err.println("Traza Guardada como 'Traza.png'");
+            System.out.println("Traza Guardada como 'Traza.png'");
         }catch(InterruptedException | IOException ex){
             System.err.println("Error al hacer la traza");
         }

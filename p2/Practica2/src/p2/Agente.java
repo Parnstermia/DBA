@@ -46,10 +46,46 @@ public class Agente extends SingleAgent{
     */
     public String pensar(){
         String orden = "";
-        // TO DO
         
+        if(miRadar.posicionMeta(12)){
+            System.out.println("Estamos en la casilla de meta");
+            orden = "logout";
+        }else{
+            if(miBateria.deboRecargar()){
+                orden = "refuel";
+                miBateria.Recargar();
+            }else{
+                orden = "moveSW";
+            }
+        }
         
         return orden;
+    }
+    
+    
+    public void recibirMensaje(){
+        try {
+            inbox = receiveACLMessage();
+            JsonObject objeto = Json.parse(inbox.getContent()).asObject();
+
+            if( objeto.get("escaner") != null){
+                System.out.println("Recibida percepción del escaner");
+                miEscaner.parsearEscaner(objeto);
+            }else if( objeto.get("radar") != null){
+                System.out.println("Recibida percepción del radar");
+                miRadar.parsearCoordenadas(objeto);
+            }else if( objeto.get("gps") != null){
+                System.out.println("Recibida percepción del gps");
+                miGPS.parsearCoordenadas(objeto);
+            }else if( objeto.get("result") != null){
+                System.out.println("Recibido resultado");
+                gestionResultados(objeto);
+
+            }
+        }catch(Exception exception){
+            System.err.println("Error al percibir");
+            System.err.println(exception.toString());
+        }
     }
     
    /**
@@ -67,30 +103,29 @@ public class Agente extends SingleAgent{
         String resultado = objeto.get("result").asString();
         switch(resultado){
             case "OK":
-                // TO DO
-                // Comprobar si estado es final
-                // y hace falta cambiar a FIN
                 estado = LOGEADO;
                 break;
             case "CRASHED":
-                // TO DO
                 System.err.println("El agente se ha chocado");
                 break;
             case "BAD_COMMAND":
-                //Requiere terminar y volver a logear
-                // TO DO
                 System.err.println("Error, orden desconocida");
                 break;
             case "BAD_PROTOCOL":
-                //Requiere terminar y volver a logear
-                // TO DO
                 System.err.println("Error de protocolo");
                 break;
             case "BAD_KEY":
-                //Requiere terminar y volver a logear
-                // TO DO
                 System.err.println("Error en la clave enviada");
                 break;
+            case "BAD_MAP":
+                System.err.println("Mapa especificado inválido");
+                break;
+            default:
+                ClaveConexion = resultado;
+                System.out.println(ClaveConexion);
+                
+                break;
+                
         }
         
     }
@@ -142,6 +177,7 @@ public class Agente extends SingleAgent{
         inbox = null;
         outbox = null;
         estado = NOLOGEADO;
+        ClaveConexion = "";
     }
     
     /**
@@ -160,84 +196,51 @@ public class Agente extends SingleAgent{
                     break;
                 case ESCUCHALOGIN:
                     System.out.println("Agente("+this.getName()+") Esperando respuesta");
-                    boolean repetir=true;
-                    while (repetir)  {
-                        try {
-                            System.out.println("1");
-                            inbox = receiveACLMessage();
-                            System.out.println("8");
-                            objeto = Json.parse(inbox.getContent()).asObject();
-                            String resultado = objeto.get("result").asString();
-                            System.out.println("2");
-                            switch(resultado){
-                                case "BAD_MAP":
-                                    System.out.println("3");
-                                    // TO DO
-                                    System.err.println("Mapa especificado inválido");
-                                    break;
-                                case "BAD_PROTOCOL":
-                                    System.out.println("4");
-                                    // TO DO
-                                    System.err.println("error al crear el JSON");
-                                    break;
-                                default:
-                                    System.out.println("5");
-                                    ClaveConexion = resultado;
-                                    System.out.println(ClaveConexion);
-                                    logout();
-                                    System.out.println("6");
-                                    estado = LOGEADO;
-                                    repetir = false;
-                                    break;
-                            }
-                        } catch (Exception ex) {
-                            System.err.println("Agente("+this.getName()+") Error al recibir login");
-                            repetir=false;
-                        }                        
-                    }         
+                    
+                    
+                    for(int i = 0 ; i < 4 ; i++)
+                        recibirMensaje();
+                    
+                    if( !ClaveConexion.equals(""))
+                        estado = LOGEADO;
+                    else
+                        estado = NOLOGEADO;
                     break;
                 case LOGEADO:
+                    System.out.println("Agente("+this.getName()+"), ESTADO: LOGEADO");
+                    
                     String movimiento = pensar();
-                    outbox = new ACLMessage();
-                    outbox.setSender(this.getAid());
-                    outbox.setReceiver(miContacto);
+                    System.out.println("Orden a realizar : " + movimiento);
                     
-                    if(!objeto.isEmpty()){
-                        objeto = new JsonObject();
+                    if( !movimiento.equals("logout")){
+                        outbox = new ACLMessage();
+                        outbox.setSender(this.getAid());
+                        outbox.setReceiver(miContacto);
+
+                        if(!objeto.isEmpty()){
+                            objeto = new JsonObject();
+                        }
+
+                        objeto.add("command", movimiento );
+                        
+                        objeto.add("key", ClaveConexion.toString() );
+
+                        outbox.setContent(objeto.toString());
+                        this.send(outbox);
+                        System.out.println(ClaveConexion);
+                        System.out.println(objeto.toString());
+                        estado = ESCUCHANDO;
+                    }else{
+                        estado = FIN;
                     }
-                    
-                    objeto.add("command", movimiento );
-                    objeto.add("key", ClaveConexion );
-                    
-                    outbox.setContent(objeto.asString());
-                    this.send(outbox);
-                    estado = ESCUCHANDO;
                     break;
                 case ESCUCHANDO:
                     // TO DO
                     System.out.println("Agente("+this.getName()+") Esperando respuesta");
                     
-                    for(int i = 0; i < 4; i++)  {
-                        try {
-                            inbox = receiveACLMessage();
-                            objeto = Json.parse(inbox.getContent()).asObject();
-                            
-                            if( objeto.get("escaner") != null){
-                                miEscaner.parsearEscaner(objeto);
-                            }else if( objeto.get("radar") != null){
-                                miRadar.parsearCoordenadas(objeto);
-                            }else if( objeto.get("gps") != null){
-                                miGPS.parsearCoordenadas(objeto);
-                            }else if( objeto.get("result") != null){
-                                gestionResultados(objeto);
-                               
-                            } 
-                            
-                            
-                        } catch (Exception ex) {
-                            System.err.println("Agente("+this.getName()+") Error al recibir login");
-                            repetir=false;
-                        }                        
+                    for(int i = 0; i < 4; i++){
+                        recibirMensaje();
+                                          
                     }
                     break;
                 case FIN:
@@ -253,43 +256,16 @@ public class Agente extends SingleAgent{
     */
     @Override
     public void finalize(){
-        //TO-DO
-        //Logout
-        outbox = new ACLMessage();
-        outbox.setSender(this.getAid());
-        outbox.setReceiver(miContacto);
-        JsonObject objeto = new JsonObject();
-        
-        objeto.add("command", "logout" );
-        objeto.add("key", ClaveConexion );
-
-        outbox.setContent(objeto.asString());
-        this.send(outbox);
-        System.err.println("Esta ahora deslogeado");
-        
-        //Recibir traza
-        
-        try{
-            System.err.println("Recibiendo traza...");
-            ACLMessage inbox = this.receiveACLMessage();
-            JsonObject injson=Json.parse(inbox.getContent()).asObject();
-            JsonArray ja = injson.get("trace").asArray();
-            byte data[] = new byte[ja.size()];
-            for(int i=0; i<data.length; i++){
-                data[i]=(byte) ja.get(i).asInt();
-            }
-            FileOutputStream fos = new FileOutputStream("Traza.png");
-            fos.write(data);
-            fos.close();
-            System.err.println("Traza Guardada como 'Traza.png'");
-        }catch(InterruptedException | IOException ex){
-            System.err.println("Error al hacer la traza");
-        }
+        System.out.println("llegamos a finalize");
+        logout();
     }
+    
+    /**
+    *
+    * @author Thomas LESBROS 
+    */
     public void logout(){
-        //TO-DO
-        //Logout
-        System.out.println("7");
+        System.out.println("Agente ("+this.getName()+") realiza logout");
         outbox = new ACLMessage();
         outbox.setSender(this.getAid());
         outbox.setReceiver(miContacto);
@@ -298,12 +274,11 @@ public class Agente extends SingleAgent{
         objeto.add("command", "logout" );
         objeto.add("key", ClaveConexion );
 
-        outbox.setContent(objeto.asString());
+        outbox.setContent(objeto.toString());
         this.send(outbox);
         System.out.println("Esta ahora deslogeado");
         
         //Recibir traza
-        
         try{
             System.out.println("Recibiendo traza...");
             ACLMessage inbox = this.receiveACLMessage();

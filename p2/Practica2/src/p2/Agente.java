@@ -34,6 +34,7 @@ public class Agente extends SingleAgent{
     private boolean terminar = false;
     private int estado = 0;
     private String miMapa;
+    private String accion;
     
     //Clave a enviar con cada mensaje en el campo Key del JSon
     private String ClaveConexion = "";
@@ -56,6 +57,7 @@ public class Agente extends SingleAgent{
                 miBateria.Recargar();
             }else{
                 orden = "moveSW";
+                miBateria.usar();
             }
         }
         
@@ -83,11 +85,22 @@ public class Agente extends SingleAgent{
             }else if( objeto.get("result") != null){
                 System.out.println("Recibido resultado");
                 gestionResultados(objeto);
-
+            }else if( objeto.get("trace") != null){
+                JsonArray ja = objeto.get("trace").asArray();
+                byte data[] = new byte[ja.size()];
+                for(int i=0; i<data.length; i++){
+                    data[i]=(byte) ja.get(i).asInt();
+                }
+                FileOutputStream fos = new FileOutputStream("Traza1.png");
+                fos.write(data);
+                fos.close();
+                System.out.println("Traza Guardada como 'Traza.png'");
             }
-        }catch(Exception exception){
+        }catch(InterruptedException exception){
             System.err.println("Error al percibir");
             System.err.println(exception.toString());
+        }catch(IOException ex){
+            System.err.println("Excepción al hacer la traza");
         }
     }
     
@@ -106,7 +119,11 @@ public class Agente extends SingleAgent{
         String resultado = objeto.get("result").asString();
         switch(resultado){
             case "OK":
-                estado = LOGEADO;
+                if(!accion.equals("logout")){
+                    estado = LOGEADO;
+                }else{
+                    estado = FIN;
+                }
                 break;
             case "CRASHED":
                 System.err.println("El agente se ha chocado");
@@ -125,7 +142,6 @@ public class Agente extends SingleAgent{
                 break;
             default:
                 ClaveConexion = resultado;
-                System.out.println(ClaveConexion);
                 break;
         }
     }
@@ -210,10 +226,10 @@ public class Agente extends SingleAgent{
                 case LOGEADO:
                     System.out.println("Agente("+this.getName()+"), ESTADO: LOGEADO");
                     
-                    String movimiento = pensar();
-                    System.out.println("Orden a realizar : " + movimiento);
+                    accion = pensar();
+                    System.out.println("Orden a realizar : " + accion);
                     
-                    if( !movimiento.equals("logout")){
+                    if( !accion.equals("logout")){
                         outbox = new ACLMessage();
                         outbox.setSender(this.getAid());
                         outbox.setReceiver(miContacto);
@@ -222,7 +238,7 @@ public class Agente extends SingleAgent{
                             objeto = new JsonObject();
                         }
 
-                        objeto.add("command", movimiento );
+                        objeto.add("command", accion );
                         
                         objeto.add("key", ClaveConexion.toString() );
 
@@ -252,7 +268,7 @@ public class Agente extends SingleAgent{
     
     /**
     *
-    * @author Thomas LESBROS 
+    * @author Thomas LESBROS y Sergio López Ayala
     */
     public void logout(){
         System.out.println("Agente ("+this.getName()+") realiza logout");
@@ -268,22 +284,15 @@ public class Agente extends SingleAgent{
         this.send(outbox);
         System.out.println("Esta ahora deslogeado");
         
-        //Recibir traza
-        try{
-            System.out.println("Recibiendo traza...");
-            ACLMessage inbox = this.receiveACLMessage();
-            JsonObject injson=Json.parse(inbox.getContent()).asObject();
-            JsonArray ja = injson.get("trace").asArray();
-            byte data[] = new byte[ja.size()];
-            for(int i=0; i<data.length; i++){
-                data[i]=(byte) ja.get(i).asInt();
-            }
-            FileOutputStream fos = new FileOutputStream("Traza.png");
-            fos.write(data);
-            fos.close();
-            System.out.println("Traza Guardada como 'Traza.png'");
-        }catch(InterruptedException | IOException ex){
-            System.err.println("Error al hacer la traza");
+        
+        //Recibimos 5 mensajes:
+        //1- OK
+        //2,3,4 - Percepciones
+        //5- traza
+        for(int i = 0; i < 5; i++){
+            recibirMensaje();
         }
+
+        
     }
 }

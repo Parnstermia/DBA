@@ -25,7 +25,7 @@ public class Radar {
     
     /**
     * @param objeto mensaje devuelto por el agente externo con información
-    * relativa a el sistema GPS
+    * relativa a el sistema radar
     * @author Sergio López Ayala
     */
     public void parsearCoordenadas(JsonObject objeto){

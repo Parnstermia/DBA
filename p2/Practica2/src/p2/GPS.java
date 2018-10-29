@@ -24,7 +24,7 @@ public class GPS {
         y = 0;
     }
     /**
-    *
+    * @param objeto Mensaje recibido por el servidor
     * @author Sergio López Ayala
     */
     public void parsearCoordenadas(JsonObject objeto){

@@ -62,7 +62,10 @@ public class Agente extends SingleAgent{
         return orden;
     }
     
-    
+    /**
+    * Método para recibir mensajes del servidor
+    * @author Sergio López Ayala
+    */
     public void recibirMensaje(){
         try {
             inbox = receiveACLMessage();
@@ -123,11 +126,8 @@ public class Agente extends SingleAgent{
             default:
                 ClaveConexion = resultado;
                 System.out.println(ClaveConexion);
-                
                 break;
-                
         }
-        
     }
     /**
     * Método para la gestión del login al servidor
@@ -201,10 +201,12 @@ public class Agente extends SingleAgent{
                     for(int i = 0 ; i < 4 ; i++)
                         recibirMensaje();
                     
-                    if( !ClaveConexion.equals(""))
+                    if( !ClaveConexion.equals("")){
                         estado = LOGEADO;
-                    else
+                    }
+                    else{
                         estado = NOLOGEADO;
+                    }
                     break;
                 case LOGEADO:
                     System.out.println("Agente("+this.getName()+"), ESTADO: LOGEADO");

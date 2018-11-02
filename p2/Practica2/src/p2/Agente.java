@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 /**
  *
- * @author Sergio López Ayala
+ * @author Sergio López Ayala/ Thomas LESBROS
  */
 public class Agente extends SingleAgent{
     //Estados del Agente
@@ -66,7 +66,7 @@ public class Agente extends SingleAgent{
     
     /**
     * Método para recibir mensajes del servidor
-    * @author Sergio López Ayala
+    * @author Sergio López Ayala y Thomas LESBROS
     */
     public void recibirMensaje(){
         try {
@@ -91,7 +91,9 @@ public class Agente extends SingleAgent{
                 for(int i=0; i<data.length; i++){
                     data[i]=(byte) ja.get(i).asInt();
                 }
-                FileOutputStream fos = new FileOutputStream("Traza1.png");
+                String title;
+                title = String.format("traza de "+miMapa+".png");
+                FileOutputStream fos = new FileOutputStream(title);
                 fos.write(data);
                 fos.close();
                 System.out.println("Traza Guardada como 'Traza.png'");
@@ -147,7 +149,7 @@ public class Agente extends SingleAgent{
     }
     /**
     * Método para la gestión del login al servidor
-    * @author Sergio López Ayala
+    * @author Sergio López Ayala y Thomas LESBROS
     */
     public void login(){
         JsonObject objeto = new JsonObject();

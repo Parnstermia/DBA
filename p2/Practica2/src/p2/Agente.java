@@ -29,6 +29,7 @@ public class Agente extends SingleAgent{
     private Radar miRadar;
     private GPS miGPS;
     private Conocimiento miConocimiento;
+    private int turno=0;
     
     //Contenedores de información de los mensajes
     private ACLMessage inbox, outbox;
@@ -155,7 +156,9 @@ public class Agente extends SingleAgent{
 				System.out.println("\nEL RADAR ES:\n"+miRadar);
 				System.out.println("\nEL CONJUNTO DE NODOS ES: \n"+nodos);
 				
-				
+                                miConocimiento.actualizarConocimiento(miRadar, miGPS, turno);
+                                
+                                
 				if ( nodos.isEmpty() ){
 					System.out.println("no hay movimientos disponibles");
 					orden = "logout";
@@ -174,6 +177,7 @@ public class Agente extends SingleAgent{
 		}
 		
 		System.out.println("\nLA ORDEN DEVUELTA EN PENSAR ES: "+orden);
+                turno++;
 		return orden;
 	}
 	
@@ -236,6 +240,7 @@ public class Agente extends SingleAgent{
                 fos.write(data);
                 fos.close();
                 System.out.println("Traza Guardada como 'Traza.png'");
+                miConocimiento.drawMap();
             }
         }catch(InterruptedException exception){
             System.err.println("Error al percibir");
@@ -319,7 +324,7 @@ public class Agente extends SingleAgent{
         super(aid);
         miMapa = mapa;
         miContacto = new AgentID(contacto);
-        //miConocimiento = new Conocimiento(4);
+        miConocimiento = new Conocimiento();
         
         
     }

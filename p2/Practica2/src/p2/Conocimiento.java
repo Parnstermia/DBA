@@ -76,9 +76,9 @@ public class Conocimiento {
     */
     
     
-    public Conocimiento(int id){
+    public Conocimiento(){
         this.crearMatriz();
-        this.setMapaID(id);
+       
     }
     
     
@@ -89,11 +89,9 @@ public class Conocimiento {
     * @param id  identificador de la matriz del mapa correspondiente
      * @return instance Instancia correspondiente al identificador
     */
-    public static Conocimiento obtenerInfo(int id){
+    public static Conocimiento obtenerInfo(){
         if (instance ==null){
-            instance = new Conocimiento(id);  //Si no tenemos información sobre el mapa que se pide, creamos nueva instancia de información
-        }else {
-            instance.setMapaID(id);
+            instance = new Conocimiento();  //Si no tenemos información sobre el mapa que se pide, creamos nueva instancia de información
         }
         return instance; 
     }
@@ -107,6 +105,7 @@ public class Conocimiento {
      *
     */
     public int[][] getMap(){
+        /*
         int tam = this.matrizMapa.length;
         int aux_comprobacion=0;
         this.matrizMapaOpt = new int[tam][tam];
@@ -120,7 +119,8 @@ public class Conocimiento {
                 } 
             }
         }
-        return this.matrizMapaOpt;
+        */
+        return this.matrizMapa;
     }
     
     
@@ -191,7 +191,8 @@ public class Conocimiento {
     }
     */
     public void actualizarConocimiento(Radar radar, GPS gps, int numMov){           
-            // Obtenemos la posición del agente. 
+            // Obtenemos la posición del agente.
+            System.out.println("Entra a actuaizar conocimeinto");
             this.pos_actual[0]= gps.getX();
             this.pos_actual[1]= gps.getY();
             
@@ -200,16 +201,34 @@ public class Conocimiento {
             
             for (int i=0; i < 5 ; i++){  // 5 es el tamaño de las filas (y columnas) que "ve" el radar
                 for (int j=0; j< 5; j++){
-                    int x = pos_actual[0] - 2 + i; // Ajustamos la posición compensando la posición actual del agente
-                    int y= pos_actual[1] - 2 +j;
+                    int x = pos_actual[0]  + i; // Ajustamos la posición compensando la posición actual del agente
+                    int y= pos_actual[1]  +j;
                     int estado = infoRadar.get(i*5 + j);
        
-
+                    
                     //Actualizamos la matriz
                     actualizarMatriz(x, y, estado);
                 }
             }
+            System.out.println("Sale de actualizar conocimiento");
     }
+    
+      /**
+    * Metodo para actualizar la matriz que almacenará los datos que tengamos del mapa
+    *
+    * @author Miguel Keane Cañizares
+    * 
+    * @param x int con cooredena X
+    * @param y int con coordenada Y
+    * @param estado int con el estado que guardaremos en la matriz
+    *
+    */
+    private void actualizarMatriz(int x, int y, int estado){
+        System.out.println("Entra a actualizar matriz: "+ x + "  " + y+ "  " + estado);
+        this.matrizMapa[x][y] = estado;
+
+    }
+    
    
     
     
@@ -289,7 +308,7 @@ public class Conocimiento {
     */
      private void crearMatriz(){
        
-            int tamMatriz = 1000;
+            int tamMatriz = 300;
             
             
             System.out.println("Creamos matriz limpia con tamaño: " + tamMatriz);
@@ -314,20 +333,42 @@ public class Conocimiento {
     
     
     
-    /**
-    * Metodo para actualizar la matriz que almacenará los datos que tengamos del mapa
-    *
-    * @author Miguel Keane Cañizares
-    * 
-    * @param x int con cooredena X
-    * @param y int con coordenada Y
-    * @param estado int con el estado que guardaremos en la matriz
-    *
-    */
-    private void actualizarMatriz(int x, int y, int estado){
-        this.matrizMapa[x][y] = estado;
-    }
+  
     
+    public void drawMap(){
+        System.out.println("| Mapa actual - Filas: " + this.matrizMapa.length + " | Columnas: " + this.matrizMapa[0].length);
+        for(int i = 0; i < matrizMapa.length ;i++) System.out.print("▉▉▉");
+        System.out.println("");
+        for(int i = 0; i < this.matrizMapa.length; i++){
+            for (int j = 0; j < this.matrizMapa[i].length; j++) {
+                int value = this.matrizMapa[i][j];
+                if(j == 0) System.out.print("▉▉▉");
+                //if(pos_actual[0] == i && pos_actual[1] == j) System.out.print(" ⎔ ");
+                if(pos_actual[0] == i && pos_actual[1] == j) System.out.print(" ● ");
+                else{
+                    switch (value) {
+                        case 0:
+                            System.out.print(" 0 ");
+                            break;
+                        case 1:
+                            System.out.print(" 1 ");
+                            break;
+                        case 2:
+                            System.out.print(" ╳ ");
+                            break;
+                        default:
+                            if(value < 10) System.out.print(" " + value+ " ");
+                            else if(value < 100) System.out.print(" " + value);
+                            else System.out.print(value);
+                            break;
+                    }
+                }
+            }
+            System.out.print("\n");
+        }
+        
+        System.out.println("/////////////////////////////////////////////////////////////////////////////////////////////////////");
+    }
   
     
     

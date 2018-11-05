@@ -39,9 +39,8 @@ public class Main {
         
         try {
 
-            roboto = new Agente(new AgentID("Smith10"), mapa, virtualhost);
 
-            roboto = new Agente(new AgentID("Pepe"), mapa, virtualhost);
+            roboto = new Agente(new AgentID("Sergio"), mapa, virtualhost);
 
             roboto.start();
         } catch (Exception ex) {

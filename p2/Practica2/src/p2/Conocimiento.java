@@ -41,6 +41,8 @@ public class Conocimiento {
     * @param id  identificador de la matriz del mapa correspondiente
     * 
     */
+    
+    /*
     public Conocimiento(int id){
         Connection connection = null;
         this.setMapaID(id);
@@ -69,6 +71,14 @@ public class Conocimiento {
                 System.err.println(e);
             }
         }
+        
+    }
+    */
+    
+    
+    public Conocimiento(int id){
+        this.crearMatriz();
+        this.setMapaID(id);
     }
     
     
@@ -124,6 +134,7 @@ public class Conocimiento {
     * @param numMov Número que indica cuantos movimientos ha hecho el agente
      *
     */
+    /*
     public void actualizarConocimiento(Radar radar, GPS gps, int numMov){
         Connection connection=null; 
         try{
@@ -145,7 +156,7 @@ public class Conocimiento {
                 for (int j=0; j< 5; j++){
                     int x = pos_actual[0] - 2 + i; // Ajustamos la posición compensando la posición actual del agente
                     int y= pos_actual[1] - 2 +j;
-                    int estado = infoRadar[i*5 + j];
+                    int estado = infoRadar.get(i*5 + j);
                     
                     
                     String querySQL = "INTERT OR REPLACE INTO Mapa_"+ this.mapa_id+"(pos_x,pos_y,radar, state) VALUES("
@@ -174,6 +185,27 @@ public class Conocimiento {
             }
         }
     }
+    */
+    public void actualizarConocimiento(Radar radar, GPS gps, int numMov){           
+            // Obtenemos la posición del agente. 
+            this.pos_actual[0]= gps.getX();
+            this.pos_actual[1]= gps.getY();
+            
+            //Obtenemos la información del radar
+            ArrayList<Integer> infoRadar= radar.getMiVector();
+            
+            for (int i=0; i < 5 ; i++){  // 5 es el tamaño de las filas (y columnas) que "ve" el radar
+                for (int j=0; j< 5; j++){
+                    int x = pos_actual[0] - 2 + i; // Ajustamos la posición compensando la posición actual del agente
+                    int y= pos_actual[1] - 2 +j;
+                    int estado = infoRadar.get(i*5 + j);
+       
+
+                    //Actualizamos la matriz
+                    actualizarMatriz(x, y, estado);
+                }
+            }
+    }
    
     
     
@@ -194,10 +226,11 @@ public class Conocimiento {
     * @author Miguel Keane Cañizares
     *
     */
+    /*
     private void crearMatriz(){
         Connection connection = null;
         try {
-            int tamMatriz = 0;
+            int tamMatriz = 1000;
             // Nos conectamos a la Base de Datos
             connection = DriverManager.getConnection("jdbc:sqlite:mapas.db");
             Statement statement = connection.createStatement();
@@ -249,6 +282,34 @@ public class Conocimiento {
             }
         }
     }
+    */
+     private void crearMatriz(){
+       
+            int tamMatriz = 1000;
+            
+            
+            System.out.println("Creamos matriz limpia con tamaño: " + tamMatriz);
+            
+            
+                
+                // Creamos la matriz del mapa
+                this.matrizMapa = new int[tamMatriz][tamMatriz];
+
+                
+                for(int i=0; i < tamMatriz ; i++){
+                    
+                    for(int j=0; j < tamMatriz; j++){
+                        this.matrizMapa[i][j] = DESCONOCIDO;
+                    }
+                }
+                    
+                    
+               
+       
+    }
+    
+    
+    
     /**
     * Metodo para actualizar la matriz que almacenará los datos que tengamos del mapa
     *

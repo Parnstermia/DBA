@@ -96,7 +96,7 @@ public class Agente extends SingleAgent{
                 FileOutputStream fos = new FileOutputStream(title);
                 fos.write(data);
                 fos.close();
-                System.out.println("Traza Guardada como 'Traza.png'");
+                System.out.println("Traza Guardada como: "+title);
             }
         }catch(InterruptedException exception){
             System.err.println("Error al percibir");

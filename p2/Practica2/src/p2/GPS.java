@@ -32,4 +32,17 @@ public class GPS {
         y = objeto.get("gps").asObject().get("y").asInt();
     }
     
+	 public int getX(){
+		 return this.x;
+	 }
+	 
+	 public int getY(){
+		 return this.y;
+	 }
+	 
+	 @Override
+	 public String toString(){
+		 String str="["+x+","+y+"]";
+		 return str;
+	 }
 }

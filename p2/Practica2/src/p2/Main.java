@@ -8,6 +8,9 @@ package p2;
 import es.upv.dsic.gti_ia.core.AgentID;
 import es.upv.dsic.gti_ia.core.AgentsConnection;
 
+import java.util.ArrayList;
+import org.apache.log4j.BasicConfigurator;
+
 /**
  *
  * @author Sergio López Ayala/ Thomas LESBROS
@@ -22,13 +25,14 @@ public class Main {
         Agente roboto;
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
-        String virtualhost = "";
-        String username = "";
-        String pass = "";
+        String virtualhost = "Bellatrix";
+        String username = "Hercules";
+        String pass = "Benavente";
         ////////////////////////////////////////////
-        String mapa = "map1";
+        String mapa = "map10";
         
-        
+        BasicConfigurator.configure();
+		  
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
@@ -38,7 +42,6 @@ public class Main {
             System.err.println("Error creando agentes");
             System.exit(1);
         }
-        
     }
     
 }

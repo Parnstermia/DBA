@@ -31,7 +31,7 @@ public class Radar {
      * Metodo get para acceder al vector con la información parseada de JSON.
      * @author Miguel Keane Cañizares
     */
-    public int[] getMiVector(){
+    public ArrayList<Integer> getMiVector(){
         return miVector;
     }
     

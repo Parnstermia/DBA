@@ -133,7 +133,7 @@ public class Conocimiento {
             this.pos_actual[1]= gps.getY();
             
             //Obtenemos la información del radar
-            int [] infoRadar= radar.getMiVector();
+            ArrayList<Integer> infoRadar= radar.getMiVector();
             
             // Nos conectamos a la base de datos SQL
             

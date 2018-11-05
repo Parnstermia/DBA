@@ -42,12 +42,12 @@ public class Agente extends SingleAgent{
     //Clave a enviar con cada mensaje en el campo Key del JSon
     private String ClaveConexion = "";
     private AgentID miContacto;
-<<<<<<< HEAD
+
     
     
     
     
-=======
+
 	 
 	 //Set que guarda el conjunto de posiciones en las que el agente ya ha estado
 	 private ArrayList<Posicion> memoria;
@@ -55,7 +55,7 @@ public class Agente extends SingleAgent{
 	 //boolean temporal
     boolean temporal=true;
 	
->>>>>>> 310eb1e5d0c7cb963feadc7b36d91038aa0f90d6
+
     /**
     * Método para la elección del siguiente movimiento
     * @return orden a enviar

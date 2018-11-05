@@ -156,21 +156,25 @@ public class Conocimiento {
                 for (int j=0; j< 5; j++){
                     int x = pos_actual[0] - 2 + i; // Ajustamos la posición compensando la posición actual del agente
                     int y= pos_actual[1] - 2 +j;
+<<<<<<< HEAD
                     int estado = infoRadar.get(i*5 + j);
+=======
+                 //   int estado = infoRadar[i*5 + j];
+>>>>>>> 87eb77c26c50a66f61a33b48f36fe0dbffe77652
                     
                     
-                    String querySQL = "INTERT OR REPLACE INTO Mapa_"+ this.mapa_id+"(pos_x,pos_y,radar, state) VALUES("
-                            + x + ","
-                            + y + ","
-                            + estado
-                            + ");";
+//                    String querySQL = "INTERT OR REPLACE INTO Mapa_"+ this.mapa_id+"(pos_x,pos_y,radar, state) VALUES("
+//                            + x + ","
+//                            + y + ","
+//                            + estado
+//                            + ");";
                     
                     
                     // Ejecutamos el query
-                    statement.executeUpdate(querySQL);
+                    //statement.executeUpdate(querySQL);
                     
                     //Actualizamos la matriz
-                    actualizarMatriz(x, y, estado);
+                    //actualizarMatriz(x, y, estado);
                 }
             }
             

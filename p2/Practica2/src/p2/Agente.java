@@ -341,8 +341,11 @@ public class Agente extends SingleAgent{
 
         
 
+
 		  memoria=new ArrayList<Posicion>();
 
+
+        memoria=new ArrayList<Posicion>();
     }
     
     /**

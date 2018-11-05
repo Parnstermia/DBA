@@ -41,7 +41,7 @@ public class Conocimiento {
     * @param id  identificador de la matriz del mapa correspondiente
     * 
     */
-    private Conocimiento(int id){
+    public Conocimiento(int id){
         Connection connection = null;
         this.setMapaID(id);
         try {

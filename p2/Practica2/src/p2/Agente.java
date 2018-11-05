@@ -26,6 +26,7 @@ public class Agente extends SingleAgent{
     private Escaner miEscaner;
     private Radar miRadar;
     private GPS miGPS;
+    private Conocimiento miConocimiento;
     
     //Contenedores de información de los mensajes
     private ACLMessage inbox, outbox;
@@ -183,6 +184,7 @@ public class Agente extends SingleAgent{
         super(aid);
         miMapa = mapa;
         miContacto = new AgentID(contacto);
+        
     }
     
     /**
@@ -199,6 +201,7 @@ public class Agente extends SingleAgent{
         outbox = null;
         estado = NOLOGEADO;
         ClaveConexion = "";
+        
     }
     
     /**

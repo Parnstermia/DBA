@@ -24,6 +24,14 @@ public class Radar {
     }
     
     /**
+     * Metodo get para acceder al vector con la información parseada de JSON.
+     * @author Miguel Keane Cañizares
+    */
+    public int[] getMiVector(){
+        return miVector;
+    }
+    
+    /**
     * @param objeto mensaje devuelto por el agente externo con información
     * relativa a el sistema radar
     * @author Sergio López Ayala

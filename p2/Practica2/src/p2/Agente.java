@@ -40,6 +40,9 @@ public class Agente extends SingleAgent{
     private String ClaveConexion = "";
     private AgentID miContacto;
     
+    
+    
+    
     /**
     * Método para la elección del siguiente movimiento
     * @return orden a enviar

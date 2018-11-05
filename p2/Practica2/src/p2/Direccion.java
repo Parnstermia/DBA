@@ -1,0 +1,24 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package p2;
+
+/**
+ * Enum diseñado para encapsular el concepto de dirección en la que se mueve el agente.
+ * @author Diego Alfonso Candelaria Rodríguez
+ */
+public enum Direccion {
+	N("moveN"), S("moveS"), E("moveE"), W("moveW"), NE("moveNE"), NW("moveNW"), SE("moveSE"), SW("moveSW");
+	
+	private final String direccion;
+	
+	public String getString(){
+		return this.direccion;
+	}
+	
+	private Direccion(String direccion){
+		this.direccion=direccion;
+	}
+}

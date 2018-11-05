@@ -32,6 +32,7 @@ public class GPS {
         y = objeto.get("gps").asObject().get("y").asInt();
     }
     
+<<<<<<< HEAD
     /**
      * Metodo get para acceder a la x.
      * @author Miguel Keane Cañizares 
@@ -49,4 +50,19 @@ public class GPS {
     }
     
     
+=======
+	 public int getX(){
+		 return this.x;
+	 }
+	 
+	 public int getY(){
+		 return this.y;
+	 }
+	 
+	 @Override
+	 public String toString(){
+		 String str="["+x+","+y+"]";
+		 return str;
+	 }
+>>>>>>> 310eb1e5d0c7cb963feadc7b36d91038aa0f90d6
 }

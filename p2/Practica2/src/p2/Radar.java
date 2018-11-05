@@ -7,20 +7,24 @@ package p2;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import java.util.ArrayList;
 
 /**
  *
  * @author Sergio López Ayala
  */
 public class Radar {
-    protected int[] miVector;
+    protected ArrayList<Integer> miVector;
+	 private final int PERMITIDO=0;
+	 private final int BLOQUEADO=1;
+	 private final int META=2;
     
     /**
     * Constructor del componente radar, genera un vector de 5x5 casillas
     * @author Sergio López Ayala
     */
     public Radar(){
-        miVector = new int[25];
+        miVector = new ArrayList<Integer>(25);
     }
     
     /**
@@ -39,7 +43,7 @@ public class Radar {
     public void parsearCoordenadas(JsonObject objeto){
         int i = 0;
         for (JsonValue j : objeto.get("radar").asArray()){
-            miVector[i] = j.asInt();
+            miVector.add(i, j.asInt());
             i++;
         } 
     }
@@ -51,7 +55,7 @@ public class Radar {
     * @author Sergio López Ayala
     */
     public boolean posicionBloqueada(int posicion){
-        return (miVector[posicion] == 1);
+       return miVector.get(posicion) == BLOQUEADO;
     }
     
         /**
@@ -61,6 +65,23 @@ public class Radar {
     * @author Sergio López Ayala
     */
     public boolean posicionMeta(int posicion){
-        return (miVector[posicion] == 2);
+        return (miVector.get(posicion) == META);
     }
+	 
+	 @Override
+	public String toString(){
+		String str="[]";
+		if(miVector.size()>0){
+			str="";
+			for(int i=0 ; i<5 ; i++){
+				str+="[";
+				for(int j=0 ; j<5 ; j++){
+					str=str+miVector.get(i*5+j)+",";
+				}
+				str+="]\n";
+			}
+		}
+		return str;
+//		return miVector.toString();
+	 }
 }

@@ -32,7 +32,7 @@ public class Main {
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
-            roboto = new Agente(new AgentID("Smith6"), mapa, virtualhost);
+            roboto = new Agente(new AgentID("Pepe"), mapa, virtualhost);
             roboto.start();
         } catch (Exception ex) {
             System.err.println("Error creando agentes");

@@ -29,7 +29,7 @@ public class Main {
         String username = "Hercules";
         String pass = "Benavente";
         ////////////////////////////////////////////
-        String mapa = "map10";
+        String mapa = "map2";
         
         BasicConfigurator.configure();
 		  

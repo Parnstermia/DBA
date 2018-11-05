@@ -29,14 +29,14 @@ public class Main {
         String username = "Hercules";
         String pass = "Benavente";
         ////////////////////////////////////////////
-        String mapa = "map2";
+        String mapa = "map4";
         
         BasicConfigurator.configure();
 		  
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
-            roboto = new Agente(new AgentID("Pepe"), mapa, virtualhost);
+            roboto = new Agente(new AgentID("Pepe53"), mapa, virtualhost);
             roboto.start();
         } catch (Exception ex) {
             System.err.println("Error creando agentes");

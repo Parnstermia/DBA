@@ -319,6 +319,8 @@ public class Agente extends SingleAgent{
         super(aid);
         miMapa = mapa;
         miContacto = new AgentID(contacto);
+        //miConocimiento = new Conocimiento(4);
+        
         
     }
     
@@ -336,11 +338,11 @@ public class Agente extends SingleAgent{
         outbox = null;
         estado = NOLOGEADO;
         ClaveConexion = "";
-<<<<<<< HEAD
+
         
-=======
+
 		  memoria=new ArrayList<Posicion>();
->>>>>>> 310eb1e5d0c7cb963feadc7b36d91038aa0f90d6
+
     }
     
     /**

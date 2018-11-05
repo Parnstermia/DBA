@@ -7,16 +7,17 @@ package p2;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
+import java.util.ArrayList;
 
 /**
  *
  * @author Sergio López Ayala 
  */
 public class Escaner {
-    public double[] miVector;
+    protected ArrayList<Double> miVector;
     
     public Escaner(){
-        miVector = new double[25];
+        miVector = new ArrayList<Double>(25);
     }
     
     /**
@@ -25,9 +26,26 @@ public class Escaner {
     */
     public void parsearEscaner(JsonObject objeto){
         int i = 0;
-        for (JsonValue j : objeto.get("radar").asArray()){     
-            miVector[i] = j.asDouble();
+        for (JsonValue j : objeto.get("scanner").asArray()){
+            miVector.add(i, j.asDouble());
             i++;
         } 
     }
+	 
+	@Override
+	public String toString(){
+		String str="[]";
+		if(miVector.size()>0){
+			str="";
+			for(int i=0 ; i<5 ; i++){
+				str+="[";
+				for(int j=0 ; j<5 ; j++){
+					str=str+miVector.get(i*5+j)+"\t,\t";
+				}
+				str+="]\n";
+			}
+		}
+		return str;
+//		return miVector.toString();
+	 }
 }

@@ -7,6 +7,7 @@ package p2;
     
 import es.upv.dsic.gti_ia.core.AgentID;
 import es.upv.dsic.gti_ia.core.AgentsConnection;
+import org.apache.log4j.BasicConfigurator;
 
 /**
  *
@@ -20,19 +21,21 @@ public class Main {
 
     public static void main(String[] args) {
         Agente roboto;
+        BasicConfigurator.configure();
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
-        String virtualhost = "";
-        String username = "";
-        String pass = "";
+        String virtualhost = "Bellatrix";
+        String username = "Hercules";
+        String pass = "Benavente";
         ////////////////////////////////////////////
         String mapa = "map1";
+        
         
         
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
-            roboto = new Agente(new AgentID("Smith6"), mapa, virtualhost);
+            roboto = new Agente(new AgentID("Smith10"), mapa, virtualhost);
             roboto.start();
         } catch (Exception ex) {
             System.err.println("Error creando agentes");

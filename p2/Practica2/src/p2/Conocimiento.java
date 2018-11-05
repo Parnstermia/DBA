@@ -52,7 +52,6 @@ public class Conocimiento {
             String crearTablaSQL = "CREATE TABLE IF NOT EXISTS Mapa_" + this.mapa_id + " ("+
                 "pos_x INTEGER NOT NULL,"+
                 "pos_y INTEGER NOT NULL,"+
-                "radar INTEGER DEFAULT 0,"+
                 "state INTEGER DEFAULT "+ DESCONOCIDO + ","+
                 "CONSTRAINT pk_posicion PRIMARY KEY (pos_x, pos_y)"+
             ")";

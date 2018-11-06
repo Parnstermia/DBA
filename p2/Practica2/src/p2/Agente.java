@@ -61,145 +61,145 @@ public class Agente extends SingleAgent{
     * @return orden a enviar
     * @author Diego Alfonso Candelaria Rodríguez
     */
-	public String pensar(){
-		Direccion direccion=Direccion.N;
-		String orden="";
-		
-		if(miRadar.posicionMeta(12)){
-			System.out.println("\n\n  ESTAMOS EN LA PUTA META  \n\n");
-			orden="logout";
-		}
-		else{
-			if(miBateria.deboRecargar()){
-				orden="refuel";
-				miBateria.Recargar();
-			}
-			else{
-				miBateria.usar();
-				
-				Posicion posicionActual=new Posicion();
-				posicionActual.x=miGPS.getX();
-				posicionActual.y=miGPS.getY();
-				memoria.add(posicionActual);
+    public String pensar(){
+        Direccion direccion=Direccion.N;
+        String orden="";
 
-				if(temporal){
-					memoria.clear();
-					temporal=false;
-				}
-				
-				ArrayList<Nodo> nodos=new ArrayList<Nodo>(8);
-				
-				Nodo nodo;
-				Posicion pos;
-				
-				System.out.println("\nEsquina superior izquierda***********************************\n");
-				//Esquina superior izquierda
-				pos=new Posicion(miGPS.x-1,miGPS.y-1);
-				if(posicionPermitida(new Posicion(1,1), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(6), Direccion.NW);
-					nodos.add(nodo);
-				}
-				System.out.println("\nMitad superior***********************************\n");
-				//Mitad superior
-				pos=new Posicion(miGPS.x,miGPS.y-1);
-				if(posicionPermitida(new Posicion(1,2), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(7), Direccion.N);
-					nodos.add(nodo);
-				}
-				System.out.println("\nEsquina superior derecha***********************************\n");
-				//Esquina superior derecha
-				pos=new Posicion(miGPS.x+1,miGPS.y-1);
-				if(posicionPermitida(new Posicion(1,3), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(8), Direccion.NE);
-					nodos.add(nodo);
-				}
-				System.out.println("\nIzquierda***********************************\n");
-				//Izquierda
-				pos=new Posicion(miGPS.x-1,miGPS.y);
-				if(posicionPermitida(new Posicion(2,1), pos)){
-					double biatch=miEscaner.miVector.get(11);
-					nodo=new Nodo(pos, biatch, Direccion.W);
-					nodos.add(nodo);
-				}
-				System.out.println("\nDerecha***********************************\n");
-				//Derecha
-				pos=new Posicion(miGPS.x+1,miGPS.y);
-				if(posicionPermitida(new Posicion(2,3), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(13), Direccion.E);
-					nodos.add(nodo);
-				}
-				System.out.println("\nEsquina inferior izquierda***********************************\n");
-				//Esquina inferior izquierda
-				pos=new Posicion(miGPS.x-1,miGPS.y+1);
-				if(posicionPermitida(new Posicion(3,1), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(16), Direccion.SW);
-					nodos.add(nodo);
-				}
-				System.out.println("\nMitad inferior***********************************\n");
-				//Mitad inferior
-				pos=new Posicion(miGPS.x,miGPS.y+1);
-				if(posicionPermitida(new Posicion(3,2), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(17), Direccion.S);
-					nodos.add(nodo);
-				}
-				System.out.println("\nEsquina inferior derecha***********************************\n");
-				//Esquina inferior derecha
-				pos=new Posicion(miGPS.x+1,miGPS.y+1);
-				if(posicionPermitida(new Posicion(3,3), pos)){
-					nodo=new Nodo(pos, miEscaner.miVector.get(18), Direccion.SE);
-					nodos.add(nodo);
-				}
-				
-				System.out.println("\nLA POSICION ACTUAL ES: \n"+miGPS);
-				System.out.println("\nEL ESCANER ES:\n"+miEscaner);
-				System.out.println("\nEL RADAR ES:\n"+miRadar);
-				System.out.println("\nEL CONJUNTO DE NODOS ES: \n"+nodos);
-				
-				
-				if ( nodos.isEmpty() ){
-					System.out.println("no hay movimientos disponibles");
-					orden = "logout";
-				}else{
-					Nodo menor=nodos.get(0);
-					for(int i=1 ; i<nodos.size() ; i++){
-						if(nodos.get(i).distancia < menor.distancia)
-							menor=nodos.get(i);
-						System.out.println("\nEL NODO MENOR ES: "+menor);
-					}
-					
-					orden=menor.direccion.getString();
-				}
-				
-			}
-		}
-		
-		System.out.println("\nLA ORDEN DEVUELTA EN PENSAR ES: "+orden);
-		return orden;
-	}
-	
-	/**
-	 * Método para comprobar si una posición es permitida
-	 * @param posicionRelativa indica una posición en una matriz 5x5
-	 * @param posicionAbsoluta indica una posición en el mapa en el que se mueve el agente
-	 * @author Diego Alfonso Candelaria Rodríguez
-	 */
-	private boolean posicionPermitida(Posicion posicionRelativa, Posicion posicionAbsoluta){
-		if(!miRadar.posicionBloqueada(posicionRelativa.x*5+posicionRelativa.y)){
-			System.out.println("\n LA POSICION NO ESTA BLOQUEADA \n");
-			if(memoria.contains(posicionAbsoluta)){
-				System.out.println("\n LA MEMORIA CONTIENE LA POSICION \n");
-				return false;
-			}
-			else{
-				System.out.println("\n LA MEMORIA NO CONTIENE LA POSICION \n");
-				return true;
-			}
-		}
-		else{
-			System.out.println("\n LA POSICION ESTA BLOQUEADA \n");
-			return false;
-		}
-	}
+        if(miRadar.posicionMeta(12)){
+            System.out.println("\n\n  ESTAMOS EN LA PUTA META  \n\n");
+            orden="logout";
+        }
+        else{
+            if(miBateria.deboRecargar()){
+                orden="refuel";
+                miBateria.Recargar();
+            }
+            else{
+                miBateria.usar();
+
+                Posicion posicionActual=new Posicion();
+                posicionActual.x=miGPS.getX();
+                posicionActual.y=miGPS.getY();
+                memoria.add(posicionActual);
+
+                if(temporal){
+                        memoria.clear();
+                        temporal=false;
+                }
+
+                ArrayList<Nodo> nodos=new ArrayList<Nodo>(8);
+
+                Nodo nodo;
+                Posicion pos;
+
+                System.out.println("\nEsquina superior izquierda***********************************\n");
+                //Esquina superior izquierda
+                pos=new Posicion(miGPS.x-1,miGPS.y-1);
+                if(posicionPermitida(new Posicion(1,1), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(6), Direccion.NW);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nMitad superior***********************************\n");
+                //Mitad superior
+                pos=new Posicion(miGPS.x,miGPS.y-1);
+                if(posicionPermitida(new Posicion(1,2), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(7), Direccion.N);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nEsquina superior derecha***********************************\n");
+                //Esquina superior derecha
+                pos=new Posicion(miGPS.x+1,miGPS.y-1);
+                if(posicionPermitida(new Posicion(1,3), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(8), Direccion.NE);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nIzquierda***********************************\n");
+                //Izquierda
+                pos=new Posicion(miGPS.x-1,miGPS.y);
+                if(posicionPermitida(new Posicion(2,1), pos)){
+                    double biatch=miEscaner.miVector.get(11);
+                    nodo=new Nodo(pos, biatch, Direccion.W);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nDerecha***********************************\n");
+                //Derecha
+                pos=new Posicion(miGPS.x+1,miGPS.y);
+                if(posicionPermitida(new Posicion(2,3), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(13), Direccion.E);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nEsquina inferior izquierda***********************************\n");
+                //Esquina inferior izquierda
+                pos=new Posicion(miGPS.x-1,miGPS.y+1);
+                if(posicionPermitida(new Posicion(3,1), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(16), Direccion.SW);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nMitad inferior***********************************\n");
+                //Mitad inferior
+                pos=new Posicion(miGPS.x,miGPS.y+1);
+                if(posicionPermitida(new Posicion(3,2), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(17), Direccion.S);
+                    nodos.add(nodo);
+                }
+                System.out.println("\nEsquina inferior derecha***********************************\n");
+                //Esquina inferior derecha
+                pos=new Posicion(miGPS.x+1,miGPS.y+1);
+                if(posicionPermitida(new Posicion(3,3), pos)){
+                    nodo=new Nodo(pos, miEscaner.miVector.get(18), Direccion.SE);
+                    nodos.add(nodo);
+                }
+
+                System.out.println("\nLA POSICION ACTUAL ES: \n"+miGPS);
+                System.out.println("\nEL ESCANER ES:\n"+miEscaner);
+                System.out.println("\nEL RADAR ES:\n"+miRadar);
+                System.out.println("\nEL CONJUNTO DE NODOS ES: \n"+nodos);
+
+
+                if ( nodos.isEmpty() ){
+                    System.out.println("no hay movimientos disponibles");
+                    orden = "logout";
+                }else{
+                    Nodo menor=nodos.get(0);
+                    for(int i=1 ; i<nodos.size() ; i++){
+                        if(nodos.get(i).distancia < menor.distancia)
+                            menor=nodos.get(i);
+                        System.out.println("\nEL NODO MENOR ES: "+menor);
+                    }
+
+                    orden=menor.direccion.getString();
+                }
+
+            }
+        }
+
+        System.out.println("\nLA ORDEN DEVUELTA EN PENSAR ES: "+orden);
+        return orden;
+    }
+
+    /**
+     * Método para comprobar si una posición es permitida
+     * @param posicionRelativa indica una posición en una matriz 5x5
+     * @param posicionAbsoluta indica una posición en el mapa en el que se mueve el agente
+     * @author Diego Alfonso Candelaria Rodríguez
+     */
+    private boolean posicionPermitida(Posicion posicionRelativa, Posicion posicionAbsoluta){
+        if(!miRadar.posicionBloqueada(posicionRelativa.x*5+posicionRelativa.y)){
+            System.out.println("\n LA POSICION NO ESTA BLOQUEADA \n");
+            if(memoria.contains(posicionAbsoluta)){
+                System.out.println("\n LA MEMORIA CONTIENE LA POSICION \n");
+                return false;
+            }
+            else{
+                System.out.println("\n LA MEMORIA NO CONTIENE LA POSICION \n");
+                return true;
+            }
+        }
+        else{
+            System.out.println("\n LA POSICION ESTA BLOQUEADA \n");
+            return false;
+        }
+    }
     
     /**
     * Método para recibir mensajes del servidor
@@ -208,9 +208,9 @@ public class Agente extends SingleAgent{
     public void recibirMensaje(){
         try {
             inbox = receiveACLMessage();
-				System.out.println("****************************************************************************");
-				System.out.println(inbox.getContent());
-				System.out.println("****************************************************************************");
+            System.out.println("****************************************************************************");
+            System.out.println(inbox.getContent());
+            System.out.println("****************************************************************************");
             JsonObject objeto = Json.parse(inbox.getContent()).asObject();
             if( objeto.get("scanner") != null){
                 System.out.println("\nRecibida percepción del escaner");

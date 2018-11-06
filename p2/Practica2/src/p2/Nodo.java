@@ -16,12 +16,14 @@ public class Nodo implements Comparable<Nodo> {
 	public Posicion posicion;
 	public double distancia;
 	public Direccion direccion;
+        public boolean pasado;
 	
 	public Nodo(){
 		posicion.x=0;
 		posicion.y=0;
 		distancia=0;
 		direccion=Direccion.N;
+                pasado = false;
 	}
 	
 	public Nodo(Posicion pos, double dist, Direccion dir){

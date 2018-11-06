@@ -15,39 +15,39 @@ public class Posicion {
 	public int y;
 	
 	public Posicion(){
-		x=0;
-		y=0;
+            x=0;
+            y=0;
 	}
 	
 	public Posicion(int x, int y){
-		this.x=x;
-		this.y=y;
+            this.x=x;
+            this.y=y;
 	}
 	
 	@Override
 	public boolean equals(Object obj){
-		boolean equal=false;
-		
-		if (obj == null) return false;
-		if (!(obj instanceof Posicion)) return false;
-		if (obj == this) return true;
-		if(((Posicion)obj).x == this.x && ((Posicion)obj).y == this.y) equal=true;
-		
-		return equal;
+            boolean equal=false;
+
+            if (obj == null) return false;
+            if (!(obj instanceof Posicion)) return false;
+            if (obj == this) return true;
+            if(((Posicion)obj).x == this.x && ((Posicion)obj).y == this.y) equal=true;
+
+            return equal;
 	}
 	
 	@Override
 	public int hashCode(){
-		int hash=17;
-		hash = hash * 31 + x;
-		hash = hash * 31 + y;
-		
-		return hash;
+            int hash=17;
+            hash = hash * 31 + x;
+            hash = hash * 31 + y;
+
+            return hash;
 	}
 	
 	@Override
 	public String toString(){
-		String str="["+x+","+y+"]";
-		return str;
+            String str="["+x+","+y+"]";
+            return str;
 	}
 }

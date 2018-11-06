@@ -382,7 +382,7 @@ public class Agente extends SingleAgent{
                 case ESCUCHALOGIN:
                     System.out.println("Agente "+this.getName()+" esperando respuesta");
 
-                    for(int i = 0 ; i < 5 ; i++)
+                    for(int i = 0 ; i < 4 ; i++)
                         recibirMensaje();
 
                     if( !ClaveConexion.equals("")){

@@ -27,18 +27,20 @@ public class Main {
         BasicConfigurator.configure();
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
-        String virtualhost = "";
-        String username = "";
-        String pass = "";
+        String virtualhost = "Bellatrix";
+        String username = "Hercules";
+        String pass = "Benavente";
         ////////////////////////////////////////////
-        String mapa = "map1";
+
+
+
+        String mapa = "map10";
         
         BasicConfigurator.configure();
 		  
         AgentsConnection.connect("isg2.ugr.es",6000, virtualhost, username, pass, false);
         
         try {
-
 
             roboto = new Agente(new AgentID("Sergio"), mapa, virtualhost);
 

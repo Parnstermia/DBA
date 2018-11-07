@@ -27,9 +27,9 @@ public class Main {
         BasicConfigurator.configure();
         ////////////////////////////////////////////
         // No hacer push a los datos del grupo
-        String virtualhost = "Bellatrix";
-        String username = "Hercules";
-        String pass = "Benavente";
+        String virtualhost = "";
+        String username = "";
+        String pass = "";
         ////////////////////////////////////////////
 
 

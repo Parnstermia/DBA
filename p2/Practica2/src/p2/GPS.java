@@ -49,7 +49,11 @@ public class GPS {
         return this.y;
     }
    
-	 
+	/**
+     * Método para devolver los datos del GPS en un String
+    * 
+    * @author Sergio López Ayala
+    */ 
 	 @Override
 	 public String toString(){
 		 String str="["+x+","+y+"]";

@@ -21,6 +21,7 @@ public class Escaner {
     }
     
     /**
+     * Método para convertir los datos del JSON en datos que el programa pueda utilizar.
     * @param objeto Mensaje recibido por el servidor
     * @author Sergio López Ayala
     */
@@ -32,6 +33,11 @@ public class Escaner {
         } 
     }
 	 
+        /**
+        * Método para convertir los datos escner en un String
+       * 
+       * @author Sergio López Ayala
+       */
 	@Override
 	public String toString(){
 		String str="[]";

@@ -14,10 +14,18 @@ public enum Direccion {
 	
 	private final String direccion;
 	
+        /**
+        * Método get para obtener la dirección actual.
+        * @author Diego Alfonso Candelaria Rodríguez
+        */
 	public String getString(){
 		return this.direccion;
 	}
 	
+        /**
+        * Método para indicar una nueva dirección.
+        * @author Diego Alfonso Candelaria Rodríguez
+        */
 	private Direccion(String direccion){
 		this.direccion=direccion;
 	}

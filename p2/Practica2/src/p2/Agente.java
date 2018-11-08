@@ -67,7 +67,7 @@ public class Agente extends SingleAgent{
 		String orden="";
 
 		if(miRadar.posicionMeta(12)){
-			System.out.println("\n\n  ESTAMOS EN LA PUTA META  \n\n");
+			System.out.println("\n\n  ESTAMOS EN LA META  \n\n");
 			orden="logout";
 		}
 		else{
@@ -251,7 +251,7 @@ public class Agente extends SingleAgent{
                 FileOutputStream fos = new FileOutputStream(title);
                 fos.write(data);
                 fos.close();
-                System.out.println("Traza Guardada como 'Traza.png'");
+                System.out.println("Traza Guardada como: "+title);
                 //miConocimiento.drawMap();
             }
         }catch(InterruptedException exception){

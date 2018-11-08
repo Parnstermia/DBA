@@ -194,7 +194,7 @@ public class Agente extends SingleAgent{
 	}
 
 	/**
-	 * Método para comprobar si una posición es permitida
+	 * Método para comprobar si una posición en el mapa está permitida
 	 * @param posicionRelativa indica una posición en una matriz 5x5
 	 * @param posicionAbsoluta indica una posición en el mapa en el que se mueve el agente
 	 * @author Diego Alfonso Candelaria Rodríguez
@@ -212,7 +212,7 @@ public class Agente extends SingleAgent{
 			}
 		}
 		else{
-			System.out.println("\n LA POSICION ESTA BLOQUEADA \n");
+			//System.out.println("\n LA POSICION ESTA BLOQUEADA \n");
 			return false;
 		}
 	}

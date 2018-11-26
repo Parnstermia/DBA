@@ -21,7 +21,7 @@ public class AgenteConMovimiento extends Agente{
     private GPS miGPS;
     private Escaner miEscaner;
     private Mapa miMapa;
-    private Bateria miBateria;
+    private Combustible miCombustible;
     
     private int estado;
     private boolean ejecutar = true;

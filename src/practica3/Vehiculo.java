@@ -5,11 +5,9 @@ package practica3;
  * @author 
  */
 public abstract class Vehiculo {
-	public Radar radar;
-	public Bateria bateria;
-	public int consumo;
-int a;
-
+	protected Radar radar;
+	protected Combustible combustible;
+	protected GPS gps;
 	
-    public abstract Direccion llegarMeta();
+	public abstract Direccion llegarMeta();
 }

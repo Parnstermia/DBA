@@ -7,7 +7,7 @@ package practica3;
 public class Combustible {
 	private final int capacidad=100;
 	private int tanque;
-   private int consumo;
+   private final int consumo;
    
    public Combustible(int consumo){
 		tanque=capacidad;
@@ -22,7 +22,7 @@ public class Combustible {
 		tanque=100;
 	}
 	
-	public int fuelDisponible(){
+	public int combustibleDisponible(){
 		return tanque;
 	}
 }

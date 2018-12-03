@@ -18,7 +18,7 @@ public class Combustible {
 		tanque-=consumo;
 	}
 	
-	public void Recargar(){
+	public void recargar(){
 		tanque=100;
 	}
 	
